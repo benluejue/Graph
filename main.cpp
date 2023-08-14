@@ -1,74 +1,75 @@
+// change in git webpage
 #include <iostream>
 #include <queue>
 #include <stack>
 #include<algorithm>
 using namespace std;
-#define  MAXVEX 100 /*×î´ó¶¥µãÊı*/
+#define  MAXVEX 100 /*æœ€å¤§é¡¶ç‚¹æ•°*/
 
 typedef  char  VertexType;
 struct  ALGraphStruct;
 typedef  struct  ALGraphStruct  *ALGraph;
 const   int     INF = 65536;
 
-/*±ß±í*/
+/*è¾¹è¡¨*/
 typedef struct EdgeNode{
-    int adjVertex;  /*¸Ã±ßËùÖ¸µÄ¶¥µãµÄÎ»ÖÃ*/
-    int weight;     /*±ßµÄÈ¨*/
-    struct EdgeNode *nextEdge;  /*Ö¸ÏòÏÂÒ»Ìõ±ßµÄÖ¸Õë*/
+    int adjVertex;  /*è¯¥è¾¹æ‰€æŒ‡çš„é¡¶ç‚¹çš„ä½ç½®*/
+    int weight;     /*è¾¹çš„æƒ*/
+    struct EdgeNode *nextEdge;  /*æŒ‡å‘ä¸‹ä¸€æ¡è¾¹çš„æŒ‡é’ˆ*/
 }EdgeNode;
-/* ¶¥µã±í*/
+/* é¡¶ç‚¹è¡¨*/
 typedef struct VNode{
-    VertexType data;   /*¶¥µãĞÅÏ¢*/
-    EdgeNode *firstEdge; /*Ö¸ÏòµÚÒ»ÌõÒÀ¸½¸Ã¶¥µãµÄ±ßµÄ»¡Ö¸Õë*/
+    VertexType data;   /*é¡¶ç‚¹ä¿¡æ¯*/
+    EdgeNode *firstEdge; /*æŒ‡å‘ç¬¬ä¸€æ¡ä¾é™„è¯¥é¡¶ç‚¹çš„è¾¹çš„å¼§æŒ‡é’ˆ*/
 }VNode;
 
 struct ALGraphStruct{
     VNode vexs[MAXVEX];
-    int vertexNum,edgeNum; /*Í¼µÄµ±Ç°¶¥µãÊıºÍ»¡Êı*/
+    int vertexNum,edgeNum; /*å›¾çš„å½“å‰é¡¶ç‚¹æ•°å’Œå¼§æ•°*/
 };
-// ±éÀú¸¨ÖúÊı×é
+// éå†è¾…åŠ©æ•°ç»„
 bool visited[MAXVEX];
-//  Prim¸¨ÖúÊı×é
+//  Primè¾…åŠ©æ•°ç»„
 struct close{
     VertexType  adjvex;
     int         lowcost;
 }closedge[MAXVEX];
-// Kruskal Ëã·¨¸¨ÖúÊı×é
+// Kruskal ç®—æ³•è¾…åŠ©æ•°ç»„
 struct helpK{
     VertexType  head;
     VertexType  Tail;
     int         lowcost;
 }Edge[MAXVEX];
-// Kruskal Ëã·¨¸¨ÖúÊı×éVexset
+// Kruskal ç®—æ³•è¾…åŠ©æ•°ç»„Vexset
 int Vexset[MAXVEX];
-/* Ñ°ÕÒµãµÄÎ»ÖÃ*/
+/* å¯»æ‰¾ç‚¹çš„ä½ç½®*/
 int locateVertex(ALGraph G,VertexType v);
-/* ´´½¨Í¼*/
+/* åˆ›å»ºå›¾*/
 void CreateALGraph(ALGraphStruct &G);
-// ´´½¨ÎŞÏòÍ¼
+// åˆ›å»ºæ— å‘å›¾
 void CreateUG(ALGraphStruct &G);
-// Õ¹Ê¾Í¼
+// å±•ç¤ºå›¾
 void Display(ALGraph G);
-// È¡µÃ±ß±íµÄµÚÒ»¸ö¶¥µã
+// å–å¾—è¾¹è¡¨çš„ç¬¬ä¸€ä¸ªé¡¶ç‚¹
 int First(ALGraphStruct G, int v);
-// È¡µÃ³ıÈ¥v2¶¥µãÏÂ£¬v1¶¥µãÏÂÒ»¸öÁÚ½Óµã
+// å–å¾—é™¤å»v2é¡¶ç‚¹ä¸‹ï¼Œv1é¡¶ç‚¹ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹
 int Next(ALGraphStruct G, int v,int v2);
 // BFS
 void BFS(ALGraphStruct G, int v);
 void visit(ALGraphStruct G,int v);
-// DFS µİ¹é
+// DFS é€’å½’
 void DFS(ALGraphStruct G,int v);
-// DFS ·Çµİ¹é
+// DFS éé€’å½’
 void DFS2(ALGraphStruct G, int v);
 
-// Prim µÄMin ¸¨Öúº¯Êı
+// Prim çš„Min è¾…åŠ©å‡½æ•°
 int Min(close a[],int n);
-// PrimËã·¨
+// Primç®—æ³•
 int Prim(ALGraphStruct G,VertexType v);
 
 // sort
 bool cmp(helpK a, helpK b);
-// KruskalËã·¨
+// Kruskalç®—æ³•
 void Kruskal(ALGraphStruct G);
 
 
@@ -82,7 +83,7 @@ int main() {
     return 0;
 }
 
-/* Ñ°ÕÒµãµÄÎ»ÖÃ*/
+/* å¯»æ‰¾ç‚¹çš„ä½ç½®*/
 int locateVertex(ALGraph G,VertexType v){
     int i;
     for(i = 0; i < G->vertexNum; i++){
@@ -92,18 +93,18 @@ int locateVertex(ALGraph G,VertexType v){
     return -1;
 }
 
-/* ´´½¨Í¼  ÓĞÏò´øÈ¨Í¼*/
+/* åˆ›å»ºå›¾  æœ‰å‘å¸¦æƒå›¾*/
 void CreateALGraph(ALGraphStruct &G){
     VertexType v1,v2;
     int weight;
-    cout<<"ÇëÊäÈë¶¥µãºÍ±ßÊı"<<endl;
+    cout<<"è¯·è¾“å…¥é¡¶ç‚¹å’Œè¾¹æ•°"<<endl;
     cin>>G.vertexNum>>G.edgeNum;
-    cout<<"ÇëÊäÈë¶¥µãÊı¾İ"<<endl;
+    cout<<"è¯·è¾“å…¥é¡¶ç‚¹æ•°æ®"<<endl;
     for(int i = 0; i < G.vertexNum; i++){
         cin>>G.vexs[i].data;
         G.vexs[i].firstEdge = nullptr;
     }
-    cout<<"ÇëÒÀ´ÎÊäÈën×é±ß¶ÔÓ¦µÄÁ½¸ö¶¥µãÒÔ¼°È¨Öµ:"<<endl;
+    cout<<"è¯·ä¾æ¬¡è¾“å…¥nç»„è¾¹å¯¹åº”çš„ä¸¤ä¸ªé¡¶ç‚¹ä»¥åŠæƒå€¼:"<<endl;
     for(int k = 0; k < G.edgeNum; k++){
         cin>>v1>>v2>>weight;
         int i = locateVertex(&G,v1);
@@ -112,44 +113,44 @@ void CreateALGraph(ALGraphStruct &G){
         Edge = (EdgeNode*)malloc(sizeof(EdgeNode));
         Edge->adjVertex = j;
         Edge->weight = weight;
-        /* Í·²å·¨*/
+        /* å¤´æ’æ³•*/
         Edge->nextEdge = G.vexs[i].firstEdge;
         G.vexs[i].firstEdge = Edge;
     }
 }
-/*´´½¨ÎŞÏòÍ¼*/
+/*åˆ›å»ºæ— å‘å›¾*/
 void CreateUG(ALGraphStruct &G){
     VertexType v1, v2;
     int weight;
-    cout<<"ÇëÊäÈë¶¥µãºÍ±ßÊı\n";
+    cout<<"è¯·è¾“å…¥é¡¶ç‚¹å’Œè¾¹æ•°\n";
     cin>>G.vertexNum>>G.edgeNum;
-    // ¹¹Ôì¶¥µã
+    // æ„é€ é¡¶ç‚¹
     for(int i = 0; i < G.vertexNum; i++){
         cin>>G.vexs[i].data;
         G.vexs[i].firstEdge = nullptr;
     }
-    // ¹¹Ôì±ß
+    // æ„é€ è¾¹
     for(int k = 0; k < G.edgeNum ;k++){
         cin>>v1>>v2>>weight;
-        // ·½±ãÔÚKruskalËã·¨ÖĞÊ¹ÓÃ
+        // æ–¹ä¾¿åœ¨Kruskalç®—æ³•ä¸­ä½¿ç”¨
         Edge[k]={v1,v2,weight};
 
         int i = locateVertex(&G,v1);
         int j = locateVertex(&G,v2);
-        // ÒòÎªÎªÎŞÏòÍ¼ ËùÒÔ²åÁ½±é a->b b<-a;
+        // å› ä¸ºä¸ºæ— å‘å›¾ æ‰€ä»¥æ’ä¸¤é a->b b<-a;
         EdgeNode* Edge1;
         Edge1 = (EdgeNode*)malloc(sizeof(EdgeNode));
         Edge1->adjVertex = j;
         Edge1->weight = weight;
-        // Í·²å·¨
+        // å¤´æ’æ³•
         Edge1->nextEdge = G.vexs[i].firstEdge;
         G.vexs[i].firstEdge = Edge1;
-        // ÒòÎªÎªÎŞÏòÍ¼ ËùÒÔ²åÁ½±é a->b b<-a;
+        // å› ä¸ºä¸ºæ— å‘å›¾ æ‰€ä»¥æ’ä¸¤é a->b b<-a;
         EdgeNode* Edge2;
         Edge2 = (EdgeNode*)malloc(sizeof(EdgeNode));
         Edge2->adjVertex = i;
         Edge2->weight = weight;
-        // Í·²å·¨
+        // å¤´æ’æ³•
         Edge2->nextEdge = G.vexs[j].firstEdge;
         G.vexs[j].firstEdge = Edge2;
 
@@ -157,10 +158,10 @@ void CreateUG(ALGraphStruct &G){
     }
 }
 
-/* Õ¹Ê¾Í¼*/
+/* å±•ç¤ºå›¾*/
 void Display(ALGraph G){
     EdgeNode *p;
-    cout<<"±àºÅ£¬  ¶¥µã£¬   ÏàÁÚ±ßµÄ¶¥µã\n";
+    cout<<"ç¼–å·ï¼Œ  é¡¶ç‚¹ï¼Œ   ç›¸é‚»è¾¹çš„é¡¶ç‚¹\n";
     for(int i = 0; i < G->vertexNum; i++){
         printf("%4d  %4c",i, G->vexs[i].data);
         for(p = G->vexs[i].firstEdge; p != nullptr; p = p->nextEdge){
@@ -181,10 +182,10 @@ int First(ALGraphStruct G, int v){
 
 int Next(ALGraphStruct G, int v,int v2){
     int index;
-    // ÏÈÕÒµ½ÄÇ¸öµã;
+    // å…ˆæ‰¾åˆ°é‚£ä¸ªç‚¹;
     EdgeNode *p;
     p = G.vexs[v].firstEdge;
-    // ÏÈÕÒµ½vµÄÎ»ÖÃ
+    // å…ˆæ‰¾åˆ°vçš„ä½ç½®
     for(p;p != nullptr; p = p->nextEdge){
         if( p->adjVertex == v2)
             break;
@@ -205,7 +206,7 @@ void BFS(ALGraphStruct G, int v){
     queue<int>que;
     que.push(v);
     while( !que.empty() ){
-        // Ã¿´Î¶¼¸³ĞÂÖµ
+        // æ¯æ¬¡éƒ½èµ‹æ–°å€¼
         v = que.front();
         que.pop();
         int w = First(G,v);
@@ -235,7 +236,7 @@ void DFS2(ALGraphStruct G, int v){
     stack<int>stk;
     stk.push(v);
     while( !stk.empty() ){
-        // ¸üĞÂvµÄÖµ
+        // æ›´æ–°vçš„å€¼
         v = stk.top();
         stk.pop();
         if( !visited[v] ){
@@ -270,12 +271,12 @@ int Prim(ALGraphStruct G,VertexType v){
     k = locateVertex(&G, v);
     closedge[k].lowcost = 0;
     closedge[k].adjvex = v;
-    // ³õÊ¼»¯
+    // åˆå§‹åŒ–
     for(i = 0; i < G.vertexNum; i++){
         if( i != k)
             closedge[i]={v, INF};
     }
-    // µÚÒ»±é³õÊ¼»¯Öµ
+    // ç¬¬ä¸€éåˆå§‹åŒ–å€¼
     EdgeNode* p = G.vexs[k].firstEdge;
     while(p){
         closedge[p->adjVertex]={v, p->weight};
@@ -283,9 +284,9 @@ int Prim(ALGraphStruct G,VertexType v){
     }
     for(i = 1; i < G.vertexNum; i++){
         k = Min(closedge,G.vertexNum);
-        // ¼ÇÂ¼×ÜÂ·¾¶
+        // è®°å½•æ€»è·¯å¾„
         sum += closedge[k].lowcost;
-        // Êä³ö¸Ã±ßµÄÁ½¸ö¶¥µã
+        // è¾“å‡ºè¯¥è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹
         cout<<closedge[k].adjvex<<"->"<<G.vexs[k].data<<endl;
 
         closedge[k].lowcost = 0;
@@ -304,12 +305,12 @@ int Prim(ALGraphStruct G,VertexType v){
 bool cmp(helpK a, helpK b){
     return a.lowcost<b.lowcost;
 }
-// KruskalËã·¨
+// Kruskalç®—æ³•
 void Kruskal(ALGraphStruct G){
     int i;
-    // ³õÊ¼»¯Edge
+    // åˆå§‹åŒ–Edge
     sort(Edge,Edge+G.edgeNum, cmp);
-    // ¹¹Ôì¸¨Öúº¯Êı Ê¹Æä³ÉÎª¸÷×ÔµÄÁ¬Í¨·ÖÁ¿
+    // æ„é€ è¾…åŠ©å‡½æ•° ä½¿å…¶æˆä¸ºå„è‡ªçš„è¿é€šåˆ†é‡
     for(i = 0; i<G.vertexNum;i++)
         Vexset[i] = i;
     for(i = 0; i<G.edgeNum;i++){
@@ -319,7 +320,7 @@ void Kruskal(ALGraphStruct G){
         int vs2 = Vexset[v2];
         if(vs1 != vs2){
             cout<<Edge[i].head<<" "<<Edge[i].Tail<<" "<<Edge[i].lowcost<<endl;
-            // Ê¹µÃÁ½¸ö·ÖÁ¿ÁªÍ¨ÔÚÒ»Æğ
+            // ä½¿å¾—ä¸¤ä¸ªåˆ†é‡è”é€šåœ¨ä¸€èµ·
             for(int k = 0;k < G.vertexNum;k++){
                 if(Vexset[k] == vs2){
                     Vexset[k] = vs1;
